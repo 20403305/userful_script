@@ -1,0 +1,63 @@
+([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]|\[([^\]]+)\]\(([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\)
+
+
+基于您提供的正则表达式，我们需要构造一个表达式，能够匹配 **所有类型的超链接**，包括 **Markdown** 格式的超链接以及常见的 **HTTP/HTTPS**、**FTP**、**File** 等协议的超链接。我们将结合您的要求，将正则表达式扩展，兼容这两种情况。
+
+### 扩展后的正则表达式：
+
+```regex
+([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]|\[([^\]]+)\]\(([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]\)
+```
+
+### 解释：
+
+1. **HTTP/HTTPS、FTP、File协议**：
+   - `([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)`：匹配常见协议，包括：
+     - `http://` 或 `https://`（支持大小写）
+     - `www.`（匹配以 `www.` 开头的网址）
+     - `ftp://` 和 `file://` 协议。
+   
+2. **URL路径及查询参数**：
+   - `[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]`：匹配 URL 路径及查询参数部分，允许多种字符（如字母、数字、符号等）。
+
+3. **Markdown 链接**：
+   - `\[([^\]]+)\]\(`：匹配 Markdown 中的 `![alt text](URL)` 或 `[alt text](URL)`，其中：
+     - `\[([^\]]+)\]`：匹配方括号中的 `alt text`（`alt text` 可以是任何非 `]` 的字符）。
+     - `\(`：匹配左括号。
+   
+   - `([hH][tT]{2}[pP]://|[hH][tT]{2}[pP][sS]://|[wW]{3}\.|[fF][tT][pP]://|[fF][iI][lL][eE]://)`：同样的协议部分，匹配 URL。
+   
+   - `[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]`：匹配 Markdown 链接中的 URL 路径和查询参数。
+
+   - `\)`：匹配右括号，结束 Markdown 链接的匹配。
+
+### 示例匹配：
+
+#### 1. **普通超链接**：
+- `http://example.com`
+- `https://example.com/path/to/resource`
+- `ftp://ftp.example.com/file.zip`
+- `file://localhost/path/to/file`
+- `https://www.example.com/image.jpg?size=large`
+  
+#### 2. **带锚点或查询参数的超链接**：
+- `http://example.com/page#section`
+- `https://example.com/file?param=value#anchor`
+
+#### 3. **Markdown 链接**：
+- `[Link Text](http://example.com)`
+- `[Image](https://example.com/image.jpg)`
+- `[Example](ftp://ftp.example.com/file.zip)`
+- `[Local File](file://localhost/path/to/file)`
+
+#### 4. **带标题的 Markdown 链接**：
+- `[Link with Title](http://example.com "This is a title")`
+- `[Image with Title](https://example.com/image.jpg "Image Title")`
+
+### 总结：
+这个正则表达式能够匹配：
+- **常见的超链接**：如 `http://example.com`、`https://example.com`、`ftp://example.com`、`file://localhost/path/to/file` 等。
+- **Markdown 格式的超链接**：如 `[Link Text](http://example.com)`、`[Image](https://example.com/image.jpg)`，以及带有可选标题的链接。
+- 支持查询参数、锚点、路径等 URL 组件。
+
+您可以用这个正则表达式来匹配各种形式的超链接，包括标准的 URL 和 Markdown 格式的图片链接。
