@@ -1,0 +1,18 @@
+version: '3'
+services:
+  xxl-job-admin:
+    image: xuxueli/xxl-job-admin:2.4.0
+    container_name: xxl-job-admin
+    ports:
+      - "31009:8080"
+    networks:
+      - my_bridge_network
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-test:3306/aikms?useUnicode=true&characterEncoding=UTF-8&useSSL=false"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "123456"
+      XXL_JOB_ACCESS_TOKEN: A87ao5t9S91JXBP6
+      
+networks:
+  my_bridge_network:
+    external: true

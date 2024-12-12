@@ -1,0 +1,5 @@
+FROM openjdk:8-jre
+VOLUME /tmp
+COPY xxl-job-executor-config.yml /xxl-job-executor/config/
+COPY path/to/xxl-job-executor.jar /xxl-job-executor/xxl-job-executor.jar
+ENTRYPOINT ["java", "-jar", "/xxl-job-executor/xxl-job-executor.jar", "--spring.config.location=/xxl-job-executor/config/xxl-job-executor-config.yml"]

@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  kuboard:
+    image: eipwork/kuboard:v3
+    ports:
+      - "80:80"
+      - "10081:10081"
+    volumes:
+      - /path/to/kuboard-data:/data
+    environment:
+      KUBOARD_ENDPOINT: "http://<YOUR_DOMAIN_OR_IP>:80"
