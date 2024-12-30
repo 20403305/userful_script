@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebrowser
+  template:
+    metadata:
+      labels:
+        app: filebrowser
+    spec:
+      containers:
+      - name: filebrowser
+        image: filebrowser/filebrowser:v2.31.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: file-storage
+          mountPath: /srv
+      volumes:
+      - name: file-storage
+        persistentVolumeClaim:
+          claimName: file-storage-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: filebrowser
+spec:
+  selector:
+    app: filebrowser
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:latest
+        imagePullPolicy: Never  # 或者使用 Never
+        ports:
+        - containerPort: 6379  # Redis 默认端口
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  # 设置了NodePort 类型的服务不能使用 clusterIPs: ["None"] 或 clusterIP: None
+  # 通过kubectl get svc 查看如果cluster-ip为None需要先删除kubectl delete svc redis
+  # 再更改为NodePort
